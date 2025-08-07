@@ -34,7 +34,7 @@ struct BreedRow: View {
         if breed.subbreeds.isEmpty {
             NavigationLink(destination:
                             BreedDetailView(
-                                viewModel: BreedDetailViewModel(breed: breed.breedName)),
+                                viewModel: BreedDetailViewModel(breed: breed.breedName, api: DogAPI())),
                            label: {
                 Text(breed.breedName.capitalized).padding()
             })
@@ -47,7 +47,7 @@ struct BreedRow: View {
                     NavigationLink(destination:
                                     BreedDetailView(
                                         viewModel: BreedDetailViewModel(
-                                            breed: breed.breedName, subbreed: subbreed
+                                            breed: breed.breedName, subbreed: subbreed, api: DogAPI()
                                         )),
                                    label: {
                         Text(subbreed.capitalized).padding()
