@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
+    
     var body: some View {
         BreedListView(viewModel: BreedListViewModel(dogAPI: DogAPI()))
     }

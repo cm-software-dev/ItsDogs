@@ -8,43 +8,45 @@ import SwiftUI
 
 class BreedDetailViewModel: BreedDetailViewModelProtocol, ObservableObject {
     
-    private let breed: String
-    private let subbreed: String?
+    private let breed: SelectedBreed
     private let api: FetchDogImagesAPIProtocol
     private let numberOfImages = 10
     
-    @Published var imageURLS: [URL] = []
+    @Published var imageURLs: [URL] = []
     
     var title: String {
         get {
-            if let subbreed = subbreed {
-                return "\(subbreed.capitalized) \(breed)"
+            if let subbreed = breed.subbreed {
+                return "\(subbreed.capitalized) \(breed.breedName)"
             }
             else {
-                return breed.capitalized
+                return breed.breedName.capitalized
             }
         }
     }
     
-    init(breed: String, subbreed: String? = nil, api: FetchDogImagesAPIProtocol) {
+    init(breed: SelectedBreed, api: FetchDogImagesAPIProtocol) {
         self.breed = breed
-        self.subbreed = subbreed
         self.api = api
     }
     
-    private func fetchImages() {
+    func fetchImages() {
         Task {
-            if let subbreed = subbreed {
-               try await api.fetchDogImages(numberOfImages: numberOfImages, breed: breed, subbreed: subbreed)
+            let result = breed.subbreed != nil ?
+            try await api.fetchDogImages(numberOfImages: numberOfImages, breed: breed.breedName, subbreed: breed.subbreed!).message
+            : try await api.fetchDogImages(numberOfImages: numberOfImages, breed: breed.breedName).message
+            print(result)
+            await MainActor.run {
+                [weak self] in
+                print("Have the imagesuRLs \(result.count)")
+                self?.imageURLs = result.compactMap({URL(string: $0)})
+                
             }
-            else {
-               try await api.fetchDogImages(numberOfImages: numberOfImages, breed: breed)
-            }
-            
         }
     }
 }
 
 protocol BreedDetailViewModelProtocol {
     var title: String {get}
+    func fetchImages()
 }

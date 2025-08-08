@@ -8,6 +8,6 @@
 import Foundation
 
 struct ImageResponse: Codable {
-    let message: [URL]
+    let message: [String]
     let status: String
 }

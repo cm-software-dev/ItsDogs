@@ -25,19 +25,19 @@ class BreedListViewModel: BreedListViewModelProtocol, ObservableObject {
         Task
         {
             let newBreedList = try await dogAPI.fetchBreedList().message
-                .map({Breed(breedName: $0, subbreeds: $1)})
-                .sorted(by: {$0.breedName < $1.breedName})
-            await MainActor.run {
-                self.breedList = newBreedList
-            }
+                    .map({Breed(breedName: $0, subbreeds: $1)})
+                        .sorted(by: {$0.breedName < $1.breedName})
+                    await MainActor.run {
+                        [weak self] in
+                        self?.breedList = newBreedList
+                    }
+                }
         }
     }
-    
-}
 
-
-protocol BreedListViewModelProtocol {
-    var breedList: [Breed] {get}
-    var title: String {get}
-    func fetchBreeds()
-}
+  
+    protocol BreedListViewModelProtocol {
+        var breedList: [Breed] {get}
+        var title: String {get}
+        func fetchBreeds()
+    }

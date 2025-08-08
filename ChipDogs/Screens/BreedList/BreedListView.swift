@@ -10,12 +10,26 @@ import SwiftUI
 struct BreedListView: View {
     
     @StateObject var viewModel: BreedListViewModel
+   
+    var destinationView: BreedDetailView?
+    @State var selectedBreed: SelectedBreed?
     
     var body: some View {
-        NavigationStack {
-            List(viewModel.breedList, id: \.breedName) {
-                breed in
-                BreedRow(breed: breed)
+        
+        NavigationSplitView {
+            NavigationStack {
+                List(viewModel.breedList, id: \.self){
+                    breed in
+                    BreedRow(breed: breed, selectedBreed: $selectedBreed)
+                }
+            }
+        }
+        detail: {
+            if let breed = selectedBreed {
+                BreedDetailView(breed: breed)
+            }
+            else {
+                Text("No selection")
             }
         }
         .onAppear {
@@ -23,41 +37,6 @@ struct BreedListView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("")
-    }
-}
-
-struct BreedRow: View {
-    
-    var breed: Breed
-    
-    var body: some View {
-        if breed.subbreeds.isEmpty {
-            NavigationLink(destination:
-                            BreedDetailView(
-                                viewModel: BreedDetailViewModel(breed: breed.breedName, api: DogAPI())),
-                           label: {
-                Text(breed.breedName.capitalized).padding()
-            })
-            
-        }
-        else {
-            DisclosureGroup {
-                ForEach(breed.subbreeds, id: \.self) {
-                    subbreed in
-                    NavigationLink(destination:
-                                    BreedDetailView(
-                                        viewModel: BreedDetailViewModel(
-                                            breed: breed.breedName, subbreed: subbreed, api: DogAPI()
-                                        )),
-                                   label: {
-                        Text(subbreed.capitalized).padding()
-                    })
-                }
-            } label: {
-                Text(breed.breedName.capitalized)
-                    .padding()
-            }
-        }
     }
 }
 
