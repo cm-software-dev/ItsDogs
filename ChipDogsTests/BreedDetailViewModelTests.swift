@@ -13,13 +13,13 @@ final class BreedDetailViewModelTests: XCTestCase {
     var cancellables = Set<AnyCancellable>()
     var viewModel: BreedDetailViewModel!
     var selectedBreed: SelectedBreed!
-    var api: MockDogImageAPI!
+    var api: MockDogAPI!
     
     let testURLs: [String] = ["https://images.dog.ceo/breeds/weimaraner/n02092339_114.jpg", "https://images.dog.ceo/breeds/weimaraner/n02092339_4271.jpg", "https://images.dog.ceo/breeds/weimaraner/n02092339_4346.jpg", "https://images.dog.ceo/breeds/weimaraner/n02092339_512.jpg", "https://images.dog.ceo/breeds/weimaraner/n02092339_5978.jpg", "https://images.dog.ceo/breeds/weimaraner/n02092339_6269.jpg", "https://images.dog.ceo/breeds/weimaraner/n02092339_6401.jpg", "https://images.dog.ceo/breeds/weimaraner/n02092339_6752.jpg", "https://images.dog.ceo/breeds/weimaraner/n02092339_7918.jpg", "https://images.dog.ceo/breeds/weimaraner/n02092339_93.jpg"]
     
     override func setUpWithError() throws {
         selectedBreed = SelectedBreed(breedName: "terrier", subbreed: "border")
-        api = MockDogImageAPI()
+        api = MockDogAPI()
         viewModel = BreedDetailViewModel(breed: selectedBreed, api: api)
     }
 
@@ -42,7 +42,7 @@ final class BreedDetailViewModelTests: XCTestCase {
     func testFetchImagesCallsTheApiAndSetsTheURLSForBreedOnly() {
         let selectedBreed = SelectedBreed(breedName: "terrier", subbreed: nil)
         
-        api = MockDogImageAPI()
+        api = MockDogAPI()
         api.imageResponse = ImageResponse(message: testURLs, status: "success")
         
         viewModel = BreedDetailViewModel(breed: selectedBreed, api: api)
@@ -72,7 +72,7 @@ final class BreedDetailViewModelTests: XCTestCase {
     func testFetchImagesCallsTheApiAndSetsTheURLSForBreedAndSubreed() {
         let selectedBreed = SelectedBreed(breedName: "terrier", subbreed: "border")
         
-        api = MockDogImageAPI()
+        api = MockDogAPI()
         api.imageResponse = ImageResponse(message: testURLs, status: "success")
         
         viewModel = BreedDetailViewModel(breed: selectedBreed, api: api)

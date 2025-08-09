@@ -21,8 +21,8 @@ struct BreedListView: View {
                     breed in
                     BreedRow(breed: breed)
                 }
+                
             }
-            
         }
         detail: {
             WelcomeDetailView(url: $viewModel.welcomeImageURL)
@@ -33,9 +33,15 @@ struct BreedListView: View {
         .onAppear {
             viewModel.fetchBreeds()
         }
+        .alert("Error fetching dogs!", isPresented: $viewModel.fetchFailed) {
+            Button("OK") {}
+        }
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("")
         .searchable(text: $viewModel.searchTerm)
+        .refreshable {
+            viewModel.fetchBreeds()
+        }
     }
 }
 

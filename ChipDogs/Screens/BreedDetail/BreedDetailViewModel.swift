@@ -13,11 +13,12 @@ class BreedDetailViewModel: BreedDetailViewModelProtocol, ObservableObject {
     private let numberOfImages = 10
     
     @Published var imageURLs: [URL] = []
+    @Published var fetchFailed = false
     
     var title: String {
         get {
             if let subbreed = breed.subbreed {
-                return "\(subbreed.capitalized) \(breed.breedName)"
+                return "\(subbreed.capitalized) \(breed.breedName.capitalized)"
             }
             else {
                 return breed.breedName.capitalized
@@ -32,15 +33,23 @@ class BreedDetailViewModel: BreedDetailViewModelProtocol, ObservableObject {
     
     func fetchImages() {
         Task {
-            let result = breed.subbreed != nil ?
-            try await api.fetchDogImages(numberOfImages: numberOfImages, breed: breed.breedName, subbreed: breed.subbreed!).message
-            : try await api.fetchDogImages(numberOfImages: numberOfImages, breed: breed.breedName).message
-            print(result)
-            await MainActor.run {
-                [weak self] in
-                print("Have the imagesuRLs \(result.count)")
-                self?.imageURLs = result.compactMap({URL(string: $0)})
-                
+            do {
+                let result = breed.subbreed != nil ?
+                try await api.fetchDogImages(numberOfImages: numberOfImages, breed: breed.breedName, subbreed: breed.subbreed!)
+                : try await api.fetchDogImages(numberOfImages: numberOfImages, breed: breed.breedName)
+                print(result)
+                await MainActor.run {
+                    [weak self] in
+                    self?.imageURLs = result.compactMap({URL(string: $0)})
+                    
+                }
+            }
+            catch {
+                print("Error in: BreedDetailViewModel.fetchImages failed. \(error.localizedDescription)")
+                await MainActor.run {
+                    [weak self] in
+                    self?.fetchFailed = true
+                }
             }
         }
     }

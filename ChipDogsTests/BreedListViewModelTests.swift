@@ -13,8 +13,8 @@ final class BreedListViewModelTests: XCTestCase {
     var viewModel: BreedListViewModel!
     var mockDogApi: MockDogAPI!
     var testBreedList = [
-        "Hound": ["Blood", "Sleepy", "Dozey"],
-        "Sausage": []
+        "hound": ["blood", "sleepy", "dozey"],
+        "sausage": []
     ]
 
     override func setUpWithError() throws {
@@ -24,7 +24,7 @@ final class BreedListViewModelTests: XCTestCase {
     }
 
     override func tearDownWithError() throws {
-       
+        cancellables.forEach({$0.cancel()})
     }
 
     func testBreedListHasBreedListDict() throws {
@@ -61,5 +61,73 @@ final class BreedListViewModelTests: XCTestCase {
         XCTAssertEqual(3, updatedBreedList?.first?.subbreeds.count)
     }
     
+    func testModifyingSearchTermsUpdatesTheBreedListIfBreedsMatchTerm() {
+                
+        var updatedBreedList: [Breed]?
+        let exp1 = XCTestExpectation(description: "Initial population of list is greater than 1")
+        let exp2 = XCTestExpectation(description: "Breed list should be filtered")
+        
+        viewModel.fetchBreeds()
+        
+        viewModel.$breedList.sink(receiveValue: {
+            result in
+            if result.count > 1 {
+                //initial population of the list after calling fetch breeds
+                updatedBreedList = result
+                exp1.fulfill()
+            }
+            if self.viewModel.searchTerm != "" {
+                updatedBreedList = result
+                exp2.fulfill()
+            }
+        })
+        .store(in: &cancellables)
+        
+        wait(for: [exp1], timeout: 1)
+        
+        XCTAssertEqual(updatedBreedList?.count, testBreedList.count)
+        
+        viewModel.searchTerm = "Sausage"
+        
+        wait(for: [exp2], timeout: 2)
+        
+        XCTAssertNotNil(updatedBreedList)
+        XCTAssertEqual(1, updatedBreedList?.count)
+        XCTAssertEqual("sausage", updatedBreedList?.first?.breedName)
+    }
+    
+    func testModifyingSearchTermsUpdatesTheBreedListIfNoBreedsMatchTheTerm() {
+                
+        var updatedBreedList: [Breed]?
+        let exp1 = XCTestExpectation(description: "Initial population of list is greater than 1")
+        let exp2 = XCTestExpectation(description: "Breed list should be filtered")
+        
+        viewModel.fetchBreeds()
+        
+        viewModel.$breedList.sink(receiveValue: {
+            result in
+            if result.count > 1 {
+                //initial population of the list after calling fetch breeds
+                updatedBreedList = result
+                exp1.fulfill()
+            }
+            if self.viewModel.searchTerm != "" {
+                updatedBreedList = result
+                exp2.fulfill()
+            }
+        })
+        .store(in: &cancellables)
+        
+        wait(for: [exp1], timeout: 1)
+        
+        XCTAssertEqual(updatedBreedList?.count, testBreedList.count)
+        
+        viewModel.searchTerm = "Hotdog"
+        
+        wait(for: [exp2], timeout: 2)
+        
+        XCTAssertNotNil(updatedBreedList)
+        XCTAssertEqual(0, updatedBreedList?.count)
+    }
 
 }

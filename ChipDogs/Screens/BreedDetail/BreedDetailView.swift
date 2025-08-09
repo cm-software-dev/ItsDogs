@@ -21,8 +21,8 @@ struct BreedDetailView: View {
     ]
     
     let regularLayout =  [
-        GridItem(.adaptive(minimum: 400, maximum: 400), spacing: 10),
-        GridItem(.adaptive(minimum: 400, maximum: 400), spacing: 10),
+        GridItem(.fixed(400), spacing: 10),
+        GridItem(.fixed(400), spacing: 10),
     ]
     
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -45,6 +45,9 @@ struct BreedDetailView: View {
         .onChange(of: viewModel.title) {
             //ensures fetch called when displaying master/detail
             viewModel.fetchImages()
+        }
+        .alert("Error fetching the dogs images!", isPresented: $viewModel.fetchFailed) {
+            Button("OK") {}
         }
     }
 }

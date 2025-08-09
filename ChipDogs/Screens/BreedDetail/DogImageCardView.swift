@@ -26,8 +26,8 @@ struct DogImageCardView: View
             phase in
             switch phase {
             case .empty:
-                ProgressView()
-                    .controlSize(.large)
+                DogProgressView()
+                    .controlSize(.regular)
                     .frame(width: 300, height: 200)
             case .success(let image):
                 VStack() {

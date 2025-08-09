@@ -7,9 +7,9 @@
 
 struct BreedListResponse: Codable {
     let message: [String : [String]]
-    let status: String
+    let status: ResponseStatus
     
-    init(message: [String : [String]], status: String) {
+    init(message: [String : [String]], status: ResponseStatus) {
         self.message = message
         self.status = status
     }

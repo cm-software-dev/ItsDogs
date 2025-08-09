@@ -9,5 +9,11 @@ import Foundation
 
 struct ImageResponse: Codable {
     let message: [String]
-    let status: String
+    let status: ResponseStatus
+}
+
+
+enum ResponseStatus: String, Codable {
+    case success = "success"
+    case error = "error"
 }

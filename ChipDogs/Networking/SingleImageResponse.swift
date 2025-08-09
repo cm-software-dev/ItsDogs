@@ -7,5 +7,5 @@
 
 struct SingleImageResponse: Codable {
     let message: String
-    let status: String
+    let status: ResponseStatus
 }
