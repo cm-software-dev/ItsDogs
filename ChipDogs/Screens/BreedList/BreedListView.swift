@@ -12,7 +12,6 @@ struct BreedListView: View {
     @StateObject var viewModel: BreedListViewModel
    
     var destinationView: BreedDetailView?
-    @State var selectedBreed: SelectedBreed?
     
     var body: some View {
         
@@ -20,23 +19,42 @@ struct BreedListView: View {
             NavigationStack {
                 List(viewModel.breedList, id: \.self){
                     breed in
-                    BreedRow(breed: breed, selectedBreed: $selectedBreed)
+                    BreedRow(breed: breed)
                 }
             }
+            
         }
         detail: {
-            if let breed = selectedBreed {
-                BreedDetailView(breed: breed)
-            }
-            else {
-                Text("No selection")
-            }
+            WelcomeDetailView(url: $viewModel.welcomeImageURL)
+                .onAppear {
+                    viewModel.fetchWelcomeImage()
+                }
         }
         .onAppear {
             viewModel.fetchBreeds()
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationTitle("")
+        .searchable(text: $viewModel.searchTerm)
+    }
+}
+
+struct WelcomeDetailView: View {
+    
+    @Binding var url: URL?
+    
+    var body: some View {
+        VStack {
+            Text("Welcome to ChipDogs!")
+                    .font(.headline)
+                    .padding()
+            Text("Choose a breed from the list to view some dogs.")
+           
+                if let url = url {
+                    DogImageCardView(url: url)
+                        .padding()
+                }
+        }
     }
 }
 

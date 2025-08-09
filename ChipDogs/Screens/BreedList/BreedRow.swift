@@ -9,39 +9,33 @@ import SwiftUI
 struct BreedRow: View {
     
     var breed: Breed
-    @Binding var selectedBreed: SelectedBreed?
-    @Environment(\.horizontalSizeClass) var horizontalSizeClass
     
     var body: some View {
         if breed.subbreeds.isEmpty {
-            if horizontalSizeClass == .regular
-            {
-                RowText(rowText: breed.breedName.capitalized)
-                    .onTapGesture {
-                        selectedBreed = SelectedBreed(breedName: breed.breedName, subbreed: nil)
-                    }
-            }
-            else {
-                NavigationLink(destination: BreedDetailView(breed: SelectedBreed(breedName: breed.breedName, subbreed: nil)), label: {
+            CustomisableNavigationLink{
+                HStack(){
                     RowText(rowText: breed.breedName.capitalized)
-                })
-            }
+                    Spacer()
+                    Image(systemName: "camera")
+                }
+            } destination: {BreedDetailView(breed: SelectedBreed(breedName: breed.breedName, subbreed: nil))}
+            
         }
         else {
             DisclosureGroup {
                 ForEach(breed.subbreeds, id: \.self) {
                     subbreed in
-                    if horizontalSizeClass == .regular {
-                        Text(subbreed.capitalized).padding().scaledToFill()
-                            .onTapGesture {
-                                selectedBreed = SelectedBreed(breedName: breed.breedName, subbreed: subbreed)
-                            }
+                    CustomisableNavigationLink {
+                        HStack {
+                            Text(subbreed.capitalized).padding().scaledToFill()
+                            Spacer()
+                            Image(systemName: "camera")
+                            
+                        }
+                    } destination: {
+                        BreedDetailView(breed: SelectedBreed(breedName: breed.breedName, subbreed: subbreed))
                     }
-                    else {
-                        NavigationLink(destination: BreedDetailView(breed: SelectedBreed(breedName: breed.breedName, subbreed: subbreed)), label: {
-                            RowText(rowText: subbreed.capitalized)
-                        })
-                    }
+                    
                 }
             } label: {
                 RowText(rowText: breed.breedName.capitalized)
@@ -60,8 +54,32 @@ struct RowText: View {
     }
 }
 
- #Preview {
-     @Previewable @State var selectedBreed: SelectedBreed? = SelectedBreed(breedName: "Hound", subbreed: "Afghan")
-     BreedRow(breed: Breed(breedName: "Hound", subbreeds: ["Afghan"]), selectedBreed: $selectedBreed)
- }
- 
+#Preview {
+    BreedRow(breed: Breed(breedName: "Hound", subbreeds: ["Afghan"]))
+}
+
+struct CustomisableNavigationLink<Label: View, Destination: View>: View {
+    let label: Label
+    let destination: Destination
+    
+    init(@ViewBuilder label: () -> Label,
+         @ViewBuilder destination: () -> Destination) {
+        self.label = label()
+        self.destination = destination()
+    }
+    
+    var body: some View {
+        // HACK: ZStack with zero opacity + EmptyView
+        // Hides default chevron accessory view for NavigationLink
+        ZStack {
+            NavigationLink {
+                self.destination
+            } label: {
+                EmptyView()
+            }
+            .opacity(0)
+            
+            self.label
+        }
+    }
+}

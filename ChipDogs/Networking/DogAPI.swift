@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct DogAPI: Sendable, FetchDogsAPIProtocol, FetchDogImagesAPIProtocol {
+struct DogAPI: Sendable, DogsAPIProtocol {
     
     private let baseURL: URL = URL(string: "https://dog.ceo")!
     private let urlSession: URLSession = .shared
@@ -37,8 +37,19 @@ struct DogAPI: Sendable, FetchDogsAPIProtocol, FetchDogImagesAPIProtocol {
         let decoder = JSONDecoder()
         return try decoder.decode(ImageResponse.self, from: data)
     }
+    
+    func fetchSingleRandomDogImage() async throws -> SingleImageResponse  {
+        let url = baseURL.appendingPathComponent("api/breeds/image/random")
+        let request = URLRequest(url: url)
+        let (data, _) = try await urlSession.data(for: request)
+        let decoder = JSONDecoder()
+        return try decoder.decode(SingleImageResponse.self, from: data)
+    }
 }
 
+protocol DogsAPIProtocol: FetchDogsAPIProtocol, FetchDogImagesAPIProtocol {
+    
+}
 
 protocol FetchDogsAPIProtocol {
     func fetchBreedList() async throws -> BreedListResponse
@@ -47,4 +58,5 @@ protocol FetchDogsAPIProtocol {
 protocol FetchDogImagesAPIProtocol {
     func fetchDogImages(numberOfImages: Int, breed: String, subbreed: String) async throws -> ImageResponse
     func fetchDogImages(numberOfImages: Int, breed: String) async throws -> ImageResponse
+    func fetchSingleRandomDogImage() async throws -> SingleImageResponse
 }

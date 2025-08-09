@@ -7,18 +7,58 @@
 
 import SwiftUI
 import Foundation
+import Combine
 
 class BreedListViewModel: BreedListViewModelProtocol, ObservableObject {
     
-    @Published var breedList: [Breed]
+    @Published var breedList: [Breed] = []
+    @Published var searchTerm: String = ""
     
-    private let dogAPI: FetchDogsAPIProtocol
+    private var cancellables = Set<AnyCancellable>()
+    
+    private var fullList: [Breed] = [] {
+        didSet {
+            breedList = fullList
+        }
+    }
+    
+    private let dogAPI: DogsAPIProtocol
     
     var title = "Dog Breeds"
     
-    init(dogAPI: FetchDogsAPIProtocol) {
+    @Published var welcomeImageURL: URL?
+    
+    init(dogAPI: DogsAPIProtocol) {
         self.breedList = []
         self.dogAPI = dogAPI
+        
+        $searchTerm
+            .debounce(for: 1, scheduler: DispatchQueue.main)
+            .sink(receiveValue: {
+                [weak self] term in
+                if let self = self {
+                    if term.isEmpty {
+                        self.breedList = self.fullList
+                    } else {
+                        self.breedList = self.fullList.filter({$0.breedName.contains(term.lowercased())})
+                    }
+                }
+            })
+            .store(in: &cancellables)
+    }
+    
+    func fetchWelcomeImage() {
+        Task {
+            [weak self] in
+            if let response = try await self?.dogAPI.fetchSingleRandomDogImage(), let url = URL(string: response.message) {
+               await MainActor.run {
+                   [weak self] in
+                   self?.welcomeImageURL = url
+                }
+            }
+            
+            
+        }
     }
     
     func fetchBreeds() {
@@ -29,7 +69,7 @@ class BreedListViewModel: BreedListViewModelProtocol, ObservableObject {
                         .sorted(by: {$0.breedName < $1.breedName})
                     await MainActor.run {
                         [weak self] in
-                        self?.breedList = newBreedList
+                        self?.fullList = newBreedList
                     }
                 }
         }
@@ -39,5 +79,7 @@ class BreedListViewModel: BreedListViewModelProtocol, ObservableObject {
     protocol BreedListViewModelProtocol {
         var breedList: [Breed] {get}
         var title: String {get}
+        var searchTerm: String {get set}
+        var welcomeImageURL: URL? {get}
         func fetchBreeds()
     }

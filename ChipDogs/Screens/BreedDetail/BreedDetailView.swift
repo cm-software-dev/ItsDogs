@@ -32,7 +32,8 @@ struct BreedDetailView: View {
             LazyVGrid(columns:  horizontalSizeClass == .compact ? compactLayout : regularLayout){
                 ForEach(viewModel.imageURLs, id: \.self){
                     url in
-                    DogImageView(url: url)
+                    DogImageCardView(url: url)
+                        
                 }
             }
         }
