@@ -11,6 +11,7 @@ struct DogImageCardView: View
 {
     let url: URL
     private var isRetry: Bool = false
+    //@Namespace var namespace
     
     init(url: URL) {
         self.init(url: url, isRetry: false)
@@ -21,6 +22,8 @@ struct DogImageCardView: View
         self.isRetry = isRetry
     }
     
+    @State var zoomImage: Image?
+    
     var body: some View {
         AsyncImage(url: url) {
             phase in
@@ -30,26 +33,14 @@ struct DogImageCardView: View
                     .controlSize(.regular)
                     .frame(width: 300, height: 200)
             case .success(let image):
-                VStack() {
-                    image
-                        .resizable()
-                        .aspectRatio(nil, contentMode: .fit)
-                    HStack(){
-                        Spacer()
-                        ShareLink(item: image, preview: SharePreview("Share this dog!", image: image)) {
-                            Label("", systemImage: "square.and.arrow.up")
-                                .foregroundColor(.black)
-                                .padding(.trailing, 16)
-                                .padding(.bottom, 8)
-                        }
-                    }
+                NavigationStack{
+                    ZoomableDogImage(url: url, image: image)
+                        .background(.white)
+                        .clipShape(RoundedRectangle(cornerRadius: 24.0))
+                        .padding()
                     
+                        .shadow(radius: 8)
                 }
-                .background(.white)
-                .clipShape(RoundedRectangle(cornerRadius: 24.0))
-                .padding()
-                
-                .shadow(radius: 8)
             case .failure(let error):
                 if !isRetry && (error as? URLError)?.code == .cancelled {
                     DogImageCardView(url: url, isRetry: true)
@@ -59,6 +50,54 @@ struct DogImageCardView: View
             @unknown default:
                 EmptyView()
             }
+        }
+    }
+}
+
+struct ZoomableDogImage: View {
+    var url: URL
+    var image: Image
+    @Namespace var namespace
+    
+    var body: some View {
+        
+            VStack() {
+                if #available(iOS 18.0, *) {
+                    NavigationLink() {
+                        ZStack {
+                            image
+                                .resizable()
+                                .aspectRatio(nil, contentMode: .fit)
+                                
+                        }
+                        .navigationTransition( .zoom(sourceID: "image-\(url.absoluteString)", in: namespace))
+                        .background(Color.clear)
+                    }
+                    label : {
+                        image
+                            .resizable()
+                            .aspectRatio(nil, contentMode: .fit)
+                            
+                    }
+                    .background(Color.clear)
+                    .matchedTransitionSource(id: "image-\(url.absoluteString)", in: namespace)
+                    
+                } else {
+                    image
+                        .resizable()
+                        .aspectRatio(nil, contentMode: .fit)
+                }
+                HStack(){
+                    Spacer()
+                    ShareLink(item: image, preview: SharePreview("Share this dog!", image: image)) {
+                        Label("", systemImage: "square.and.arrow.up")
+                            .foregroundColor(.black)
+                            .padding(.trailing, 16)
+                            .padding(.bottom, 8)
+                    }
+                }
+                
+            
         }
     }
 }

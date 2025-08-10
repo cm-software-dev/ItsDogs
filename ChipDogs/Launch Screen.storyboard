@@ -16,15 +16,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dalmatian-background-2" translatesAutoresizingMaskIntoConstraints="NO" id="i1U-Ub-0lr">
-                                <rect key="frame" x="0.0" y="24" width="1032" height="1307"/>
-                                <color key="backgroundColor" red="0.0" green="0.7803921568627451" blue="0.74509803921568629" alpha="0.10370964403973509" colorSpace="custom" customColorSpace="sRGB"/>
+                                <rect key="frame" x="0.0" y="0.0" width="1032" height="1376"/>
+                                <color key="backgroundColor" red="0.0" green="0.7803921568627451" blue="0.74509803921568629" alpha="0.10000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="ChipDogs" textAlignment="center" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="GJd-Yh-RWb">
-                                <rect key="frame" x="366" y="409.5" width="300" height="100"/>
+                                <rect key="frame" x="356" y="399.5" width="320" height="120"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="100" id="GC2-5a-Pw3"/>
-                                    <constraint firstAttribute="width" constant="300" id="h6f-UT-oxY"/>
+                                    <constraint firstAttribute="height" constant="120" id="GC2-5a-Pw3"/>
+                                    <constraint firstAttribute="width" constant="320" id="h6f-UT-oxY"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" name="Futura-Bold" family="Futura" pointSize="45"/>
                                 <nil key="textColor"/>
@@ -41,12 +41,12 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Bcu-3y-fUS" firstAttribute="centerX" secondItem="obG-Y5-kRd" secondAttribute="centerX" id="5cz-MP-9tL"/>
-                            <constraint firstItem="i1U-Ub-0lr" firstAttribute="top" secondItem="Bcu-3y-fUS" secondAttribute="top" id="9j3-bO-7g8"/>
-                            <constraint firstItem="Bcu-3y-fUS" firstAttribute="bottom" secondItem="i1U-Ub-0lr" secondAttribute="bottom" id="IED-73-cbK"/>
                             <constraint firstItem="i1U-Ub-0lr" firstAttribute="leading" secondItem="Bcu-3y-fUS" secondAttribute="leading" id="OTa-js-lYR"/>
                             <constraint firstItem="Bcu-3y-fUS" firstAttribute="centerX" secondItem="GJd-Yh-RWb" secondAttribute="centerX" id="Q3B-4B-g5h"/>
                             <constraint firstAttribute="bottom" secondItem="obG-Y5-kRd" secondAttribute="bottom" constant="20" id="Y44-ml-fuU"/>
+                            <constraint firstAttribute="bottom" secondItem="i1U-Ub-0lr" secondAttribute="bottom" id="YqK-M3-iVp"/>
                             <constraint firstItem="Bcu-3y-fUS" firstAttribute="trailing" secondItem="i1U-Ub-0lr" secondAttribute="trailing" id="Yub-dR-5KH"/>
+                            <constraint firstItem="i1U-Ub-0lr" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="jO2-aV-acw"/>
                             <constraint firstItem="GJd-Yh-RWb" firstAttribute="centerY" secondItem="Ze5-6b-2t3" secondAttribute="bottom" multiplier="1/3" constant="1" id="moa-c2-u7t"/>
                         </constraints>
                     </view>

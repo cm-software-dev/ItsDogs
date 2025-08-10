@@ -36,14 +36,14 @@ final class BreedDetailViewModelTests: XCTestCase {
         selectedBreed = SelectedBreed(breedName: "terrier", subbreed: "border")
         
         viewModel = BreedDetailViewModel(breed: selectedBreed, api: api)
-        XCTAssertEqual("Border terrier", viewModel.title)
+        XCTAssertEqual("Border Terrier", viewModel.title)
     }
     
     func testFetchImagesCallsTheApiAndSetsTheURLSForBreedOnly() {
         let selectedBreed = SelectedBreed(breedName: "terrier", subbreed: nil)
         
         api = MockDogAPI()
-        api.imageResponse = ImageResponse(message: testURLs, status: "success")
+        api.imageResponse = testURLs
         
         viewModel = BreedDetailViewModel(breed: selectedBreed, api: api)
         
@@ -62,6 +62,7 @@ final class BreedDetailViewModelTests: XCTestCase {
         
         wait(for: [exp], timeout: 1)
         
+        XCTAssertFalse(viewModel.fetchFailed)
         XCTAssertNotNil(updatedImageUrls)
         XCTAssertEqual(1, api.fetchDogImagesBreedOnlyCallCounter)
         XCTAssertEqual(testURLs.count, updatedImageUrls?.count)
@@ -73,7 +74,7 @@ final class BreedDetailViewModelTests: XCTestCase {
         let selectedBreed = SelectedBreed(breedName: "terrier", subbreed: "border")
         
         api = MockDogAPI()
-        api.imageResponse = ImageResponse(message: testURLs, status: "success")
+        api.imageResponse = testURLs
         
         viewModel = BreedDetailViewModel(breed: selectedBreed, api: api)
         
@@ -92,6 +93,7 @@ final class BreedDetailViewModelTests: XCTestCase {
         
         wait(for: [exp], timeout: 1)
         
+        XCTAssertFalse(viewModel.fetchFailed)
         XCTAssertNotNil(updatedImageUrls)
         XCTAssertEqual(1, api.fetchDogImagesWithSubreedCallCounter)
         XCTAssertEqual(testURLs.count, updatedImageUrls?.count)
@@ -99,5 +101,56 @@ final class BreedDetailViewModelTests: XCTestCase {
         
     }
    
+    func testIfAPIThrowsUrlsNotSetAndFetchFailedIsSetForBreedAndSubreed() {
+        api.throwError = true
+        
+        let selectedBreed = SelectedBreed(breedName: "terrier", subbreed: "border")
+        
+        viewModel = BreedDetailViewModel(breed: selectedBreed, api: api)
+        
+        let exp = XCTestExpectation(description: "$fetchFailed not updated")
+        
+        viewModel.$fetchFailed.sink(receiveValue: {
+            result in
+            if result {
+                exp.fulfill()
+            }
+            
+        }).store(in: &cancellables)
+        
+        viewModel.fetchImages()
+        
+        wait(for: [exp], timeout: 1)
+        
+        XCTAssertTrue(viewModel.fetchFailed)
+        XCTAssertEqual(1, api.fetchDogImagesWithSubreedCallCounter)
+        XCTAssertEqual(0, viewModel.imageURLs.count)
+    }
+    
+    func testIfAPIThrowsUrlsNotSetAndFetchFailedIsSetForBreedOnly() {
+        api.throwError = true
+        
+        let selectedBreed = SelectedBreed(breedName: "terrier", subbreed: nil)
+        
+        viewModel = BreedDetailViewModel(breed: selectedBreed, api: api)
+        
+        let exp = XCTestExpectation(description: "$fetchFailed not updated")
+        
+        viewModel.$fetchFailed.sink(receiveValue: {
+            result in
+            if result {
+                exp.fulfill()
+            }
+            
+        }).store(in: &cancellables)
+        
+        viewModel.fetchImages()
+        
+        wait(for: [exp], timeout: 1)
+        
+        XCTAssertTrue(viewModel.fetchFailed)
+        XCTAssertEqual(1, api.fetchDogImagesBreedOnlyCallCounter)
+        XCTAssertEqual(0, viewModel.imageURLs.count)
+    }
 
 }

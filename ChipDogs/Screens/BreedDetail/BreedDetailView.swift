@@ -47,7 +47,9 @@ struct BreedDetailView: View {
         }
         .onAppear {
             //ensures fetch is called on iphone
-            viewModel.fetchImages()
+            if viewModel.imageURLs.isEmpty {
+                viewModel.fetchImages()
+            }
         }
         .onChange(of: viewModel.title) {
             //ensures fetch called when displaying master/detail

@@ -19,7 +19,7 @@ final class BreedListViewModelTests: XCTestCase {
 
     override func setUpWithError() throws {
         mockDogApi = MockDogAPI( )
-        mockDogApi.breedResponse = BreedListResponse(message: testBreedList, status: "test")
+        mockDogApi.breedResponse = testBreedList
         viewModel = BreedListViewModel(dogAPI: mockDogApi)
     }
 
@@ -56,6 +56,7 @@ final class BreedListViewModelTests: XCTestCase {
         
         wait(for: [exp], timeout: 1)
         
+        XCTAssertFalse(viewModel.fetchFailed)
         XCTAssertEqual(1, mockDogApi.fetchBreedListCallCounter)
         XCTAssertNotNil(updatedBreedList)
         XCTAssertEqual(3, updatedBreedList?.first?.subbreeds.count)
@@ -128,6 +129,30 @@ final class BreedListViewModelTests: XCTestCase {
         
         XCTAssertNotNil(updatedBreedList)
         XCTAssertEqual(0, updatedBreedList?.count)
+    }
+    
+    func testIfAPIThrowsUrlsNotSetAndFetchFailedIsSet() {
+        mockDogApi.throwError = true
+        
+        viewModel = BreedListViewModel(dogAPI: mockDogApi)
+        
+        let exp = XCTestExpectation(description: "fetchFailed not updated")
+        
+        viewModel.$fetchFailed.sink(receiveValue: {
+            result in
+            if result {
+                exp.fulfill()
+            }
+            
+        }).store(in: &cancellables)
+        
+        viewModel.fetchBreeds()
+        
+        wait(for: [exp], timeout: 1)
+        
+        XCTAssertTrue(viewModel.fetchFailed)
+        XCTAssertEqual(1, mockDogApi.fetchBreedListCallCounter)
+        XCTAssertEqual(0, viewModel.breedList.count)
     }
 
 }

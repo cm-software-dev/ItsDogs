@@ -57,5 +57,6 @@ class BreedDetailViewModel: BreedDetailViewModelProtocol, ObservableObject {
 
 protocol BreedDetailViewModelProtocol {
     var title: String {get}
+    var fetchFailed: Bool {get set}
     func fetchImages()
 }
