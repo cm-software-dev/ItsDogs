@@ -33,11 +33,18 @@ struct BreedDetailView: View {
                 ForEach(viewModel.imageURLs, id: \.self){
                     url in
                     DogImageCardView(url: url)
-                        
                 }
             }
         }
-        .navigationTitle(viewModel.title)
+        .background(Color.baseAppBackground)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                VStack {
+                    Text(viewModel.title).font(.custom("Futura", size: 28)).bold()
+                        .padding()
+                }
+            }
+        }
         .onAppear {
             //ensures fetch is called on iphone
             viewModel.fetchImages()

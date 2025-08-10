@@ -54,7 +54,6 @@ struct DogImageCardView: View
                 if !isRetry && (error as? URLError)?.code == .cancelled {
                     DogImageCardView(url: url, isRetry: true)
                 } else {
-                    Text("\(error.localizedDescription)")
                     EmptyView()
                 }
             @unknown default:

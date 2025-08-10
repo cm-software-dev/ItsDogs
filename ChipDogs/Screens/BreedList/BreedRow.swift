@@ -27,7 +27,7 @@ struct BreedRow: View {
                     subbreed in
                     CustomisableNavigationLink {
                         HStack {
-                            Text(subbreed.capitalized).padding().scaledToFill()
+                            Text(subbreed.capitalized).font(.custom("Futura", size: 18)).padding().scaledToFill()
                             Spacer()
                             Image(systemName: "camera")
                             
@@ -50,7 +50,7 @@ struct RowText: View {
     
     var body: some View {
         Text(rowText).padding()
-            .font(.headline)
+            .font(.custom("Futura", size: 18)).bold()
     }
 }
 

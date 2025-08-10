@@ -17,7 +17,7 @@ struct DogProgressView: View {
             .rotationEffect(.degrees(Double.random(in: 0...90)))
             .rotationEffect(Angle(degrees: animate ? 370 : 0))
             .animation(
-                .linear(duration: 0.5)
+                .linear(duration: 0.6)
                 .repeatForever(autoreverses: false),
                 value: animate
             )
