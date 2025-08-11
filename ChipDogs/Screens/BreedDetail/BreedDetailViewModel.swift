@@ -37,7 +37,6 @@ class BreedDetailViewModel: BreedDetailViewModelProtocol, ObservableObject {
                 let result = breed.subbreed != nil ?
                 try await api.fetchDogImages(numberOfImages: numberOfImages, breed: breed.breedName, subbreed: breed.subbreed!)
                 : try await api.fetchDogImages(numberOfImages: numberOfImages, breed: breed.breedName)
-                print(result)
                 await MainActor.run {
                     [weak self] in
                     self?.imageURLs = result.compactMap({URL(string: $0)})
