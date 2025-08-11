@@ -11,7 +11,6 @@ struct DogImageCardView: View
 {
     let url: URL
     private var isRetry: Bool = false
-    //@Namespace var namespace
     
     init(url: URL) {
         self.init(url: url, isRetry: false)
@@ -21,8 +20,6 @@ struct DogImageCardView: View
         self.url = url
         self.isRetry = isRetry
     }
-    
-    @State var zoomImage: Image?
     
     var body: some View {
         AsyncImage(url: url) {
@@ -34,11 +31,10 @@ struct DogImageCardView: View
                     .frame(width: 300, height: 200)
             case .success(let image):
                 NavigationStack{
-                    ZoomableDogImage(url: url, image: image)
+                    ZoomableDogImageCard(url: url, image: image)
                         .background(.white)
                         .clipShape(RoundedRectangle(cornerRadius: 24.0))
                         .padding()
-                    
                         .shadow(radius: 8)
                 }
             case .failure(let error):
@@ -54,13 +50,12 @@ struct DogImageCardView: View
     }
 }
 
-struct ZoomableDogImage: View {
+struct ZoomableDogImageCard: View {
     var url: URL
     var image: Image
     @Namespace var namespace
     
     var body: some View {
-        
             VStack() {
                 if #available(iOS 18.0, *) {
                     NavigationLink() {
@@ -68,10 +63,9 @@ struct ZoomableDogImage: View {
                             image
                                 .resizable()
                                 .aspectRatio(nil, contentMode: .fit)
-                                
+                                .background(.clear)
                         }
                         .navigationTransition( .zoom(sourceID: "image-\(url.absoluteString)", in: namespace))
-                        .background(Color.clear)
                     }
                     label : {
                         image
@@ -79,7 +73,6 @@ struct ZoomableDogImage: View {
                             .aspectRatio(nil, contentMode: .fit)
                             
                     }
-                    .background(Color.clear)
                     .matchedTransitionSource(id: "image-\(url.absoluteString)", in: namespace)
                     
                 } else {
@@ -96,8 +89,6 @@ struct ZoomableDogImage: View {
                             .padding(.bottom, 8)
                     }
                 }
-                
-            
         }
     }
 }

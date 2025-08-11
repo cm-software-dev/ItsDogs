@@ -40,7 +40,7 @@ struct BreedDetailView: View {
         .toolbar {
             ToolbarItem(placement: .principal) {
                 VStack {
-                    Text(viewModel.title).font(.custom("Futura", size: 28)).bold()
+                    Text(viewModel.title).fontAppDefaultBold(size: 28)
                         .padding()
                 }
             }

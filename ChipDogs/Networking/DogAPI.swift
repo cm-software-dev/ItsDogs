@@ -40,7 +40,7 @@ struct DogAPI: Sendable, DogsAPIProtocol {
         let (data, _) = try await urlSession.data(for: request)
         let decoder = JSONDecoder()
         let response =  try decoder.decode(ImageResponse.self, from: data)
-        guard response.status != .success else {
+        guard response.status == .success else {
             throw DogError.fetchError("Failed to fetch dog images")
         }
         return response.message

@@ -27,7 +27,7 @@ struct BreedListView: View {
                 .toolbar {
                     ToolbarItem(placement: .principal) {
                         VStack {
-                            Text(viewModel.title).font(.custom("Futura", size: 28)).bold()
+                            Text(viewModel.title).fontAppDefaultBold(size: 28)
                                 .padding()
                         }
                     }
@@ -64,10 +64,9 @@ struct WelcomeDetailView: View {
         VStack {
             VStack{
                 Text("Welcome to ChipDogs!")
-                    .font(.custom("Futura", size: 28))
-                    .bold()
+                    .fontAppDefaultBold(size: 28)
                     .padding()
-                Text("Choose a breed from the list to view some dogs.").font(.custom("Futura", size: 18))
+                Text("Choose a breed from the list to view some dogs.").fontAppDefault(size: 18)
             }
             
             if let url = url {

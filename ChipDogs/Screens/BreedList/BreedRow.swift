@@ -27,7 +27,10 @@ struct BreedRow: View {
                     subbreed in
                     CustomisableNavigationLink {
                         HStack {
-                            Text(subbreed.capitalized).font(.custom("Futura", size: 18)).padding().scaledToFill()
+                            Text(subbreed.capitalized)
+                                .fontAppDefault(size: 18)
+                                .padding()
+                                .scaledToFill()
                             Spacer()
                             Image(systemName: "camera")
                             
@@ -50,7 +53,7 @@ struct RowText: View {
     
     var body: some View {
         Text(rowText).padding()
-            .font(.custom("Futura", size: 18)).bold()
+            .fontAppDefaultBold(size: 18)
     }
 }
 
@@ -69,7 +72,6 @@ struct CustomisableNavigationLink<Label: View, Destination: View>: View {
     }
     
     var body: some View {
-        // HACK: ZStack with zero opacity + EmptyView
         // Hides default chevron accessory view for NavigationLink
         ZStack {
             NavigationLink {
