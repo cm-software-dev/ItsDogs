@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		650601D82E4DFB2600AEB456 /* ZoomableDogImageCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650601D72E4DFB2600AEB456 /* ZoomableDogImageCard.swift */; };
+		650601DA2E4DFC5B00AEB456 /* CustomisableNavigationLink.swift in Sources */ = {isa = PBXBuildFile; fileRef = 650601D92E4DFC5B00AEB456 /* CustomisableNavigationLink.swift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		65AE72302E44A92E003BE6F5 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,6 +29,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		650601D72E4DFB2600AEB456 /* ZoomableDogImageCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomableDogImageCard.swift; sourceTree = "<group>"; };
+		650601D92E4DFC5B00AEB456 /* CustomisableNavigationLink.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomisableNavigationLink.swift; sourceTree = "<group>"; };
 		65AE72222E44A92D003BE6F5 /* ChipDogs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChipDogs.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		65AE722F2E44A92E003BE6F5 /* ChipDogsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChipDogsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		65AE72392E44A92E003BE6F5 /* ChipDogsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChipDogsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -79,6 +86,8 @@
 				65AE72322E44A92E003BE6F5 /* ChipDogsTests */,
 				65AE723C2E44A92E003BE6F5 /* ChipDogsUITests */,
 				65AE72232E44A92D003BE6F5 /* Products */,
+				650601D72E4DFB2600AEB456 /* ZoomableDogImageCard.swift */,
+				650601D92E4DFC5B00AEB456 /* CustomisableNavigationLink.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -236,6 +245,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				650601DA2E4DFC5B00AEB456 /* CustomisableNavigationLink.swift in Sources */,
+				650601D82E4DFB2600AEB456 /* ZoomableDogImageCard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

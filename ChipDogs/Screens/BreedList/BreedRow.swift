@@ -14,7 +14,8 @@ struct BreedRow: View {
         if breed.subbreeds.isEmpty {
             CustomisableNavigationLink{
                 HStack(){
-                    RowText(rowText: breed.breedName.capitalized)
+                    Text(breed.breedName.capitalized).padding()
+                        .fontAppDefaultBold(size: 18)
                     Spacer()
                     Image(systemName: "camera")
                 }
@@ -41,19 +42,10 @@ struct BreedRow: View {
                     
                 }
             } label: {
-                RowText(rowText: breed.breedName.capitalized)
+                Text(breed.breedName.capitalized).padding()
+                    .fontAppDefaultBold(size: 18)
             }
         }
-    }
-}
-
-struct RowText: View {
-    
-    let rowText: String
-    
-    var body: some View {
-        Text(rowText).padding()
-            .fontAppDefaultBold(size: 18)
     }
 }
 
@@ -61,27 +53,4 @@ struct RowText: View {
     BreedRow(breed: Breed(breedName: "Hound", subbreeds: ["Afghan"]))
 }
 
-struct CustomisableNavigationLink<Label: View, Destination: View>: View {
-    let label: Label
-    let destination: Destination
-    
-    init(@ViewBuilder label: () -> Label,
-         @ViewBuilder destination: () -> Destination) {
-        self.label = label()
-        self.destination = destination()
-    }
-    
-    var body: some View {
-        // Hides default chevron accessory view for NavigationLink
-        ZStack {
-            NavigationLink {
-                self.destination
-            } label: {
-                EmptyView()
-            }
-            .opacity(0)
-            
-            self.label
-        }
-    }
-}
+
