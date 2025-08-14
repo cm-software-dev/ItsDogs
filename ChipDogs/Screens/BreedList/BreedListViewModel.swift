@@ -12,7 +12,6 @@ import Combine
 class BreedListViewModel: BreedListViewModelProtocol, ObservableObject {
     
     @Published var breedList: [Breed] = []
-    @Published var searchTerm: String = ""
     @Published var fetchFailed = false
     
     private var cancellables = Set<AnyCancellable>()
@@ -32,20 +31,15 @@ class BreedListViewModel: BreedListViewModelProtocol, ObservableObject {
     init(dogAPI: DogsAPIProtocol) {
         self.breedList = []
         self.dogAPI = dogAPI
-        
-        $searchTerm
-            .debounce(for: 1, scheduler: DispatchQueue.main)
-            .sink(receiveValue: {
-                [weak self] term in
-                if let self = self {
-                    if term.isEmpty {
-                        self.breedList = self.fullList
-                    } else {
-                        self.breedList = self.fullList.filter({$0.breedName.contains(term.lowercased())})
-                    }
-                }
-            })
-            .store(in: &cancellables)
+    }
+    
+    @MainActor
+    func filterBreeds(term: String)  {
+        if term.isEmpty {
+            breedList = fullList
+        } else {
+            breedList = fullList.filter({$0.breedName.contains(term.lowercased())})
+        }
     }
     
     @MainActor
@@ -88,7 +82,7 @@ class BreedListViewModel: BreedListViewModelProtocol, ObservableObject {
 protocol BreedListViewModelProtocol {
     var breedList: [Breed] {get}
     var title: String {get}
-    var searchTerm: String {get set}
     var welcomeImageURL: URL? {get}
     func fetchBreeds() async
+    func filterBreeds(term: String)
 }

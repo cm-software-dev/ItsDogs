@@ -10,6 +10,7 @@ import SwiftUI
 struct BreedListView: View {
     
     @StateObject var viewModel: BreedListViewModel
+    @State private var query = ""
     
     var destinationView: BreedDetailView?
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
@@ -54,7 +55,14 @@ struct BreedListView: View {
             Button("OK") {}
         }
         
-        .searchable(text: $viewModel.searchTerm)
+        .searchable(text: $query)
+        .task(id: query) {
+            do {
+                try await Task.sleep(for: .seconds(1))
+                viewModel.filterBreeds(term: query)
+            }
+            catch {}
+        }
         .refreshable {
             await viewModel.fetchBreeds()
         }

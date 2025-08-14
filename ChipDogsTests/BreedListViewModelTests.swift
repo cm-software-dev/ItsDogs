@@ -63,7 +63,6 @@ final class BreedListViewModelTests: XCTestCase {
     
     func testModifyingSearchTermsUpdatesTheBreedListIfBreedsMatchTerm() async {
                 
-        var updatedBreedList: [Breed]?
         let exp1 = XCTestExpectation(description: "Initial population of list is greater than 1")
         let exp2 = XCTestExpectation(description: "Breed list should be filtered")
         
@@ -71,13 +70,11 @@ final class BreedListViewModelTests: XCTestCase {
         
         viewModel.$breedList.sink(receiveValue: {
             result in
-            if result.count > 1 {
+            if result.count == 2 {
                 //initial population of the list after calling fetch breeds
-                updatedBreedList = result
                 exp1.fulfill()
             }
-            if self.viewModel.searchTerm != "" {
-                updatedBreedList = result
+            if result.count == 1 {
                 exp2.fulfill()
             }
         })
@@ -85,20 +82,19 @@ final class BreedListViewModelTests: XCTestCase {
         
         await fulfillment(of: [exp1], timeout: 1)
         
-        XCTAssertEqual(updatedBreedList?.count, testBreedList.count)
+        XCTAssertEqual(viewModel.breedList.count, testBreedList.count)
         
-        viewModel.searchTerm = "Sausage"
+        await viewModel.filterBreeds(term:  "Sausage")
         
         await fulfillment(of: [exp2], timeout: 1)
 
-        XCTAssertNotNil(updatedBreedList)
-        XCTAssertEqual(1, updatedBreedList?.count)
-        XCTAssertEqual("sausage", updatedBreedList?.first?.breedName)
+        XCTAssertNotNil(viewModel.breedList)
+        XCTAssertEqual(1, viewModel.breedList.count)
+        XCTAssertEqual("sausage", viewModel.breedList.first?.breedName)
     }
     
-    func testModifyingSearchTermsUpdatesTheBreedListIfNoBreedsMatchTheTerm() async {
+   func testModifyingSearchTermsUpdatesTheBreedListIfNoBreedsMatchTheTerm() async {
                 
-        var updatedBreedList: [Breed]?
         let exp1 = XCTestExpectation(description: "Initial population of list is greater than 1")
         let exp2 = XCTestExpectation(description: "Breed list should be filtered")
         
@@ -108,11 +104,9 @@ final class BreedListViewModelTests: XCTestCase {
             result in
             if result.count > 1 {
                 //initial population of the list after calling fetch breeds
-                updatedBreedList = result
                 exp1.fulfill()
             }
-            if self.viewModel.searchTerm != "" {
-                updatedBreedList = result
+            if result.count == 0 {
                 exp2.fulfill()
             }
         })
@@ -120,16 +114,14 @@ final class BreedListViewModelTests: XCTestCase {
         
         await fulfillment(of: [exp1], timeout: 1)
         
-        XCTAssertEqual(updatedBreedList?.count, testBreedList.count)
+        XCTAssertEqual(viewModel.breedList.count, testBreedList.count)
         
-        viewModel.searchTerm = "Hotdog"
+        await viewModel.filterBreeds(term: "Hotdog")
        
         await fulfillment(of: [exp2], timeout: 2)
 
-       
-        
-        XCTAssertNotNil(updatedBreedList)
-        XCTAssertEqual(0, updatedBreedList?.count)
+        XCTAssertNotNil(viewModel.breedList)
+        XCTAssertEqual(0, viewModel.breedList.count)
     }
     
     func testIfAPIThrowsUrlsNotSetAndFetchFailedIsSet() async {

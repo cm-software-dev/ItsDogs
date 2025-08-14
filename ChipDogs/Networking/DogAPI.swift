@@ -9,12 +9,14 @@ import Foundation
 
 struct DogAPI: Sendable, DogsAPIProtocol {
     
-    private let baseURL: URL = URL(string: "https://dog.ceo")!
+    private let baseURL: URL? = URL(string: "https://dog.ceo")
     private let urlSession: URLSession = .shared
     
     
     func fetchBreedList() async throws -> [String: [String]] {
-        let url = baseURL.appendingPathComponent("api/breeds/list/all")
+        guard let url = baseURL?.appendingPathComponent("api/breeds/list/all") else {
+            throw DogError.fetchError("Failed to parse URL")
+        }
         let request = URLRequest(url: url)
         let (data, _) = try await urlSession.data(for: request)
         let decoder = JSONDecoder()
@@ -26,12 +28,16 @@ struct DogAPI: Sendable, DogsAPIProtocol {
     }
     
     func fetchDogImages(numberOfImages: Int, breed: String, subbreed: String) async throws -> [String] {
-        let url = baseURL.appendingPathComponent("api/breed/\(breed)/\(subbreed)/images/random/\(numberOfImages)")
+        guard let url = baseURL?.appendingPathComponent("api/breed/\(breed)/\(subbreed)/images/random/\(numberOfImages)") else {
+            throw DogError.fetchError("Failed to parse URL")
+        }
         return try await fetchDogImages(forURL: url)
     }
     
     func fetchDogImages(numberOfImages: Int, breed: String) async throws -> [String] {
-        let url = baseURL.appendingPathComponent("api/breed/\(breed)/images/random/\(numberOfImages)")
+        guard let url = baseURL?.appendingPathComponent("api/breed/\(breed)/images/random/\(numberOfImages)") else {
+            throw DogError.fetchError("Failed to parse URL")
+        }
         return try await fetchDogImages(forURL: url)
     }
     
@@ -47,7 +53,9 @@ struct DogAPI: Sendable, DogsAPIProtocol {
     }
     
     func fetchSingleRandomDogImage() async throws -> String  {
-        let url = baseURL.appendingPathComponent("api/breeds/image/random")
+        guard let url = baseURL?.appendingPathComponent("api/breeds/image/random") else {
+            throw DogError.fetchError("Failed to parse URL")
+        }
         let request = URLRequest(url: url)
         let (data, _) = try await urlSession.data(for: request)
         let decoder = JSONDecoder()

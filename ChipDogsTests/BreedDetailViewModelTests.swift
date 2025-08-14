@@ -39,7 +39,7 @@ final class BreedDetailViewModelTests: XCTestCase {
         XCTAssertEqual("Border Terrier", viewModel.title)
     }
     
-    func testFetchImagesCallsTheApiAndSetsTheURLSForBreedOnly() {
+    func testFetchImagesCallsTheApiAndSetsTheURLSForBreedOnly() async {
         let selectedBreed = SelectedBreed(breedName: "terrier", subbreed: nil)
         
         api = MockDogAPI()
@@ -58,9 +58,9 @@ final class BreedDetailViewModelTests: XCTestCase {
             }
         }).store(in: &cancellables)
         
-        viewModel.fetchImages()
+        await viewModel.fetchImages()
         
-        wait(for: [exp], timeout: 1)
+        await fulfillment(of: [exp], timeout: 1)
         
         XCTAssertFalse(viewModel.fetchFailed)
         XCTAssertNotNil(updatedImageUrls)
@@ -70,7 +70,7 @@ final class BreedDetailViewModelTests: XCTestCase {
         
     }
     
-    func testFetchImagesCallsTheApiAndSetsTheURLSForBreedAndSubreed() {
+    func testFetchImagesCallsTheApiAndSetsTheURLSForBreedAndSubreed() async {
         let selectedBreed = SelectedBreed(breedName: "terrier", subbreed: "border")
         
         api = MockDogAPI()
@@ -89,9 +89,9 @@ final class BreedDetailViewModelTests: XCTestCase {
             }
         }).store(in: &cancellables)
         
-        viewModel.fetchImages()
+        await viewModel.fetchImages()
         
-        wait(for: [exp], timeout: 1)
+        await fulfillment(of: [exp], timeout: 1)
         
         XCTAssertFalse(viewModel.fetchFailed)
         XCTAssertNotNil(updatedImageUrls)
@@ -101,7 +101,7 @@ final class BreedDetailViewModelTests: XCTestCase {
         
     }
    
-    func testIfAPIThrowsUrlsNotSetAndFetchFailedIsSetForBreedAndSubreed() {
+    func testIfAPIThrowsUrlsNotSetAndFetchFailedIsSetForBreedAndSubreed() async {
         api.throwError = true
         
         let selectedBreed = SelectedBreed(breedName: "terrier", subbreed: "border")
@@ -118,16 +118,16 @@ final class BreedDetailViewModelTests: XCTestCase {
             
         }).store(in: &cancellables)
         
-        viewModel.fetchImages()
+        await viewModel.fetchImages()
         
-        wait(for: [exp], timeout: 1)
+        await fulfillment(of: [exp], timeout: 1)
         
         XCTAssertTrue(viewModel.fetchFailed)
         XCTAssertEqual(1, api.fetchDogImagesWithSubreedCallCounter)
         XCTAssertEqual(0, viewModel.imageURLs.count)
     }
     
-    func testIfAPIThrowsUrlsNotSetAndFetchFailedIsSetForBreedOnly() {
+    func testIfAPIThrowsUrlsNotSetAndFetchFailedIsSetForBreedOnly() async {
         api.throwError = true
         
         let selectedBreed = SelectedBreed(breedName: "terrier", subbreed: nil)
@@ -144,9 +144,9 @@ final class BreedDetailViewModelTests: XCTestCase {
             
         }).store(in: &cancellables)
         
-        viewModel.fetchImages()
+       await viewModel.fetchImages()
         
-        wait(for: [exp], timeout: 1)
+        await fulfillment(of: [exp], timeout: 1)
         
         XCTAssertTrue(viewModel.fetchFailed)
         XCTAssertEqual(1, api.fetchDogImagesBreedOnlyCallCounter)
