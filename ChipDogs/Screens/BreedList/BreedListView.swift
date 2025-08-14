@@ -12,6 +12,7 @@ struct BreedListView: View {
     @StateObject var viewModel: BreedListViewModel
     
     var destinationView: BreedDetailView?
+    @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     
     var body: some View {
         
@@ -36,11 +37,15 @@ struct BreedListView: View {
             
         }
         detail: {
-            WelcomeDetailView(url: $viewModel.welcomeImageURL)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .task {
-                    await viewModel.fetchWelcomeImage()
+            NavigationStack {
+                switch (horizontalSizeClass) {
+                case .regular:
+                    WelcomeDetailView(viewModel: viewModel)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                default:
+                    EmptyView()
                 }
+            }
         }
         .task {
             await viewModel.fetchBreeds()
@@ -56,8 +61,7 @@ struct BreedListView: View {
     }
 }
 
-
-
 #Preview {
-    BreedListView(viewModel: BreedListViewModel(dogAPI: DogAPI()))
+    let viewModel = BreedListViewModel(dogAPI: DogAPI())
+    BreedListView(viewModel: viewModel)
 }

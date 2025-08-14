@@ -36,7 +36,7 @@ final class BreedListViewModelTests: XCTestCase {
     }
     
     
-    func testFetchBreedsCallsDogApiSetsBreedList() throws
+    func testFetchBreedsCallsDogApiSetsBreedList() async throws
     {
         var updatedBreedList: [Breed]?
         let exp = XCTestExpectation(description: "BreedList not updated")
@@ -52,9 +52,8 @@ final class BreedListViewModelTests: XCTestCase {
         
         XCTAssertNil(updatedBreedList)
         
-        viewModel.fetchBreeds()
-        
-        wait(for: [exp], timeout: 1)
+        await viewModel.fetchBreeds()
+        await fulfillment(of: [exp], timeout: 1)
         
         XCTAssertFalse(viewModel.fetchFailed)
         XCTAssertEqual(1, mockDogApi.fetchBreedListCallCounter)
@@ -62,13 +61,13 @@ final class BreedListViewModelTests: XCTestCase {
         XCTAssertEqual(3, updatedBreedList?.first?.subbreeds.count)
     }
     
-    func testModifyingSearchTermsUpdatesTheBreedListIfBreedsMatchTerm() {
+    func testModifyingSearchTermsUpdatesTheBreedListIfBreedsMatchTerm() async {
                 
         var updatedBreedList: [Breed]?
         let exp1 = XCTestExpectation(description: "Initial population of list is greater than 1")
         let exp2 = XCTestExpectation(description: "Breed list should be filtered")
         
-        viewModel.fetchBreeds()
+        await viewModel.fetchBreeds()
         
         viewModel.$breedList.sink(receiveValue: {
             result in
@@ -84,26 +83,26 @@ final class BreedListViewModelTests: XCTestCase {
         })
         .store(in: &cancellables)
         
-        wait(for: [exp1], timeout: 1)
+        await fulfillment(of: [exp1], timeout: 1)
         
         XCTAssertEqual(updatedBreedList?.count, testBreedList.count)
         
         viewModel.searchTerm = "Sausage"
         
-        wait(for: [exp2], timeout: 2)
-        
+        await fulfillment(of: [exp2], timeout: 1)
+
         XCTAssertNotNil(updatedBreedList)
         XCTAssertEqual(1, updatedBreedList?.count)
         XCTAssertEqual("sausage", updatedBreedList?.first?.breedName)
     }
     
-    func testModifyingSearchTermsUpdatesTheBreedListIfNoBreedsMatchTheTerm() {
+    func testModifyingSearchTermsUpdatesTheBreedListIfNoBreedsMatchTheTerm() async {
                 
         var updatedBreedList: [Breed]?
         let exp1 = XCTestExpectation(description: "Initial population of list is greater than 1")
         let exp2 = XCTestExpectation(description: "Breed list should be filtered")
         
-        viewModel.fetchBreeds()
+        await viewModel.fetchBreeds()
         
         viewModel.$breedList.sink(receiveValue: {
             result in
@@ -119,19 +118,21 @@ final class BreedListViewModelTests: XCTestCase {
         })
         .store(in: &cancellables)
         
-        wait(for: [exp1], timeout: 1)
+        await fulfillment(of: [exp1], timeout: 1)
         
         XCTAssertEqual(updatedBreedList?.count, testBreedList.count)
         
         viewModel.searchTerm = "Hotdog"
-        
-        wait(for: [exp2], timeout: 2)
+       
+        await fulfillment(of: [exp2], timeout: 2)
+
+       
         
         XCTAssertNotNil(updatedBreedList)
         XCTAssertEqual(0, updatedBreedList?.count)
     }
     
-    func testIfAPIThrowsUrlsNotSetAndFetchFailedIsSet() {
+    func testIfAPIThrowsUrlsNotSetAndFetchFailedIsSet() async {
         mockDogApi.throwError = true
         
         viewModel = BreedListViewModel(dogAPI: mockDogApi)
@@ -146,9 +147,9 @@ final class BreedListViewModelTests: XCTestCase {
             
         }).store(in: &cancellables)
         
-        viewModel.fetchBreeds()
+        await viewModel.fetchBreeds()
         
-        wait(for: [exp], timeout: 1)
+        await fulfillment(of: [exp], timeout: 1)
         
         XCTAssertTrue(viewModel.fetchFailed)
         XCTAssertEqual(1, mockDogApi.fetchBreedListCallCounter)

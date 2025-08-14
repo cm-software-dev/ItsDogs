@@ -52,13 +52,16 @@ class BreedListViewModel: BreedListViewModelProtocol, ObservableObject {
     func fetchWelcomeImage() async {
         do {
             let urlString =   try await dogAPI.fetchSingleRandomDogImage()
-            try Task.checkCancellation()
+            //try Task.checkCancellation()
             let url = URL(string: urlString)
             welcomeImageURL = url
         }
+        catch DogError.fetchError(let message){
+            print("fetchError in: BreedListViewModel.fetchWelcomeImage \(message)")
+            fetchFailed = true
+        }
         catch {
             print("Error in: BreedListViewModel.fetchWelcomeImage \(error.localizedDescription)")
-            fetchFailed = true
         }
     }
     
@@ -66,16 +69,18 @@ class BreedListViewModel: BreedListViewModelProtocol, ObservableObject {
     func fetchBreeds() async {
         do {
             let breedDict = try await dogAPI.fetchBreedList()
-            try Task.checkCancellation()
             let newBreedList = breedDict
                 .map({Breed(breedName: $0, subbreeds: $1)})
                 .sorted(by: {$0.breedName < $1.breedName})
             
             fullList = newBreedList
         }
+        catch DogError.fetchError(let message) {
+            print("DogError in: BreedListViewModel.fetchBreeds \(message)")
+            fetchFailed = true
+        }
         catch {
             print("Error in: BreedListViewModel.fetchBreeds \(error.localizedDescription)")
-            fetchFailed = true
         }
     }
 }

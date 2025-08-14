@@ -8,7 +8,7 @@ import SwiftUI
 
 struct WelcomeDetailView: View {
     
-    @Binding var url: URL?
+    @ObservedObject var viewModel: BreedListViewModel
     
     var body: some View {
         VStack {
@@ -19,7 +19,7 @@ struct WelcomeDetailView: View {
                 Text("Choose a breed from the list to view some dogs.").fontAppDefault(size: 18)
             }
             
-            if let url = url {
+            if let url = viewModel.welcomeImageURL {
                 DogImageCardView(url: url)
                     .padding()
             }
@@ -28,10 +28,12 @@ struct WelcomeDetailView: View {
         .frame(maxWidth: .infinity,maxHeight: .infinity)
         .padding()
         .background(Color.baseAppBackground)
+        .task {
+            await viewModel.fetchWelcomeImage()
+        }
     }
 }
 
 #Preview {
-    @Previewable @State var url = URL(string: "https://images.dog.ceo/breeds/affenpinscher/n02110627_3144.jpg")
-    WelcomeDetailView(url: $url)
+    WelcomeDetailView(viewModel: BreedListViewModel(dogAPI: DogAPI()))
 }

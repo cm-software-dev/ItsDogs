@@ -31,25 +31,21 @@ class BreedDetailViewModel: BreedDetailViewModelProtocol, ObservableObject {
         self.api = api
     }
     
-    func fetchImages() {
-        Task {
-            do {
-                let result = breed.subbreed != nil ?
-                try await api.fetchDogImages(numberOfImages: numberOfImages, breed: breed.breedName, subbreed: breed.subbreed!)
-                : try await api.fetchDogImages(numberOfImages: numberOfImages, breed: breed.breedName)
-                await MainActor.run {
-                    [weak self] in
-                    self?.imageURLs = result.compactMap({URL(string: $0)})
-                    
-                }
-            }
-            catch {
-                print("Error in: BreedDetailViewModel.fetchImages failed. \(error.localizedDescription)")
-                await MainActor.run {
-                    [weak self] in
-                    self?.fetchFailed = true
-                }
-            }
+    @MainActor
+    func fetchImages() async {
+        do {
+            let result = breed.subbreed != nil ?
+            try await api.fetchDogImages(numberOfImages: numberOfImages, breed: breed.breedName, subbreed: breed.subbreed!)
+            : try await api.fetchDogImages(numberOfImages: numberOfImages, breed: breed.breedName)
+            
+            imageURLs = result.compactMap({URL(string: $0)})
+        }
+        catch DogError.fetchError(let message){
+            print("Error in: BreedDetailViewModel.fetchImages failed. \(message)")
+            fetchFailed = true
+        }
+        catch {
+            print("Error in: BreedDetailViewModel.fetchImages failed. \(error.localizedDescription)")
         }
     }
 }
@@ -57,5 +53,5 @@ class BreedDetailViewModel: BreedDetailViewModelProtocol, ObservableObject {
 protocol BreedDetailViewModelProtocol {
     var title: String {get}
     var fetchFailed: Bool {get set}
-    func fetchImages()
+    func fetchImages() async
 }

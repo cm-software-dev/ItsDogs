@@ -45,15 +45,17 @@ struct BreedDetailView: View {
                 }
             }
         }
-        .onAppear {
+        .task {
             //ensures fetch is called on iphone
-            if viewModel.imageURLs.isEmpty {
-                viewModel.fetchImages()
+           if viewModel.imageURLs.isEmpty {
+                await viewModel.fetchImages()
             }
         }
         .onChange(of: viewModel.title) {
             //ensures fetch called when displaying master/detail
-            viewModel.fetchImages()
+            Task {
+                await viewModel.fetchImages()
+            }
         }
         .alert("Error fetching the dogs images!", isPresented: $viewModel.fetchFailed) {
             Button("OK") {}
