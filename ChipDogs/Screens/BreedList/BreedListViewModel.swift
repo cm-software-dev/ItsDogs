@@ -48,49 +48,34 @@ class BreedListViewModel: BreedListViewModelProtocol, ObservableObject {
             .store(in: &cancellables)
     }
     
-    func fetchWelcomeImage() {
-        Task {
-            [weak self] in
-            do {
-                if let response = try await self?.dogAPI.fetchSingleRandomDogImage(), let url = URL(string: response) {
-                    await MainActor.run {
-                        [weak self] in
-                        self?.welcomeImageURL = url
-                    }
-                }
-            }
-            catch {
-                print("Error in: BreedListViewModel.fetchWelcomeImage \(error.localizedDescription)")
-                await MainActor.run
-                {
-                    [weak self] in
-                    self?.fetchFailed = true
-                }
-            }
-            
+    @MainActor
+    func fetchWelcomeImage() async {
+        do {
+            let urlString =   try await dogAPI.fetchSingleRandomDogImage()
+            try Task.checkCancellation()
+            let url = URL(string: urlString)
+            welcomeImageURL = url
+        }
+        catch {
+            print("Error in: BreedListViewModel.fetchWelcomeImage \(error.localizedDescription)")
+            fetchFailed = true
         }
     }
     
-    func fetchBreeds() {
-        Task
-        {
-            do {
-                let newBreedList = try await dogAPI.fetchBreedList()
-                    .map({Breed(breedName: $0, subbreeds: $1)})
-                    .sorted(by: {$0.breedName < $1.breedName})
-                await MainActor.run {
-                    [weak self] in
-                    self?.fullList = newBreedList
-                }
-            }
-            catch {
-                print("Error in: BreedListViewModel.fetchBreeds \(error.localizedDescription)")
-                await MainActor.run
-                {
-                    [weak self] in
-                    self?.fetchFailed = true
-                }
-            }
+    @MainActor
+    func fetchBreeds() async {
+        do {
+            let breedDict = try await dogAPI.fetchBreedList()
+            try Task.checkCancellation()
+            let newBreedList = breedDict
+                .map({Breed(breedName: $0, subbreeds: $1)})
+                .sorted(by: {$0.breedName < $1.breedName})
+            
+            fullList = newBreedList
+        }
+        catch {
+            print("Error in: BreedListViewModel.fetchBreeds \(error.localizedDescription)")
+            fetchFailed = true
         }
     }
 }
@@ -100,5 +85,5 @@ protocol BreedListViewModelProtocol {
     var title: String {get}
     var searchTerm: String {get set}
     var welcomeImageURL: URL? {get}
-    func fetchBreeds()
+    func fetchBreeds() async
 }

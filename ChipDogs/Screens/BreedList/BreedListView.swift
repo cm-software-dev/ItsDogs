@@ -38,12 +38,12 @@ struct BreedListView: View {
         detail: {
             WelcomeDetailView(url: $viewModel.welcomeImageURL)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .onAppear {
-                    viewModel.fetchWelcomeImage()
+                .task {
+                    await viewModel.fetchWelcomeImage()
                 }
         }
-        .onAppear {
-            viewModel.fetchBreeds()
+        .task {
+            await viewModel.fetchBreeds()
         }
         .alert("Error fetching dogs!", isPresented: $viewModel.fetchFailed) {
             Button("OK") {}
@@ -51,7 +51,7 @@ struct BreedListView: View {
         
         .searchable(text: $viewModel.searchTerm)
         .refreshable {
-            viewModel.fetchBreeds()
+            await viewModel.fetchBreeds()
         }
     }
 }
