@@ -1,13 +1,13 @@
 //
-//  ChipDogsUITests.swift
-//  ChipDogsUITests
+//  ItsDogsUITests.swift
+//  ItsDogsUITests
 //
 //  Created by Calum Maclellan on 07/08/2025.
 //
 
 import XCTest
 
-final class ChipDogsUITests: XCTestCase {
+final class ItsDogsUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

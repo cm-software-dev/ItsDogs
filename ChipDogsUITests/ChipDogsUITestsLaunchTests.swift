@@ -1,13 +1,13 @@
 //
-//  ChipDogsUITestsLaunchTests.swift
-//  ChipDogsUITests
+//  ItsDogsUITestsLaunchTests.swift
+//  ItsDogsUITests
 //
 //  Created by Calum Maclellan on 07/08/2025.
 //
 
 import XCTest
 
-final class ChipDogsUITestsLaunchTests: XCTestCase {
+final class ItsDogsUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

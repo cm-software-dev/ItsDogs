@@ -1,26 +1,28 @@
 //
 //  BreedListViewModelTests.swift
-//  ChipDogsTests
+//  ItsDogsTests
 //
 //  Created by Calum Maclellan on 07/08/2025.
 //
-@testable import ChipDogs
+@testable import ItsDogs
 import XCTest
 import Combine
 
 final class BreedListViewModelTests: XCTestCase {
     var cancellables = Set<AnyCancellable>()
     var viewModel: BreedListViewModel!
-    var mockDogApi: MockDogAPI!
+    var mockBreedService: MockDogBreedService!
+    var mockImageService: MockDogImageService!
     var testBreedList = [
-        "hound": ["blood", "sleepy", "dozey"],
-        "sausage": []
+        Breed(breedName: "hound", subbreeds: ["blood", "sleepy", "dozey"]),
+        Breed(breedName: "sausage", subbreeds: [])
     ]
 
     override func setUpWithError() throws {
-        mockDogApi = MockDogAPI( )
-        mockDogApi.breedResponse = testBreedList
-        viewModel = BreedListViewModel(dogAPI: mockDogApi)
+        mockBreedService = MockDogBreedService()
+        mockImageService = MockDogImageService()
+        mockBreedService.breedResponse = testBreedList
+        viewModel = BreedListViewModel(imageService: mockImageService, breedService: mockBreedService)
     }
 
     override func tearDownWithError() throws {
@@ -56,7 +58,7 @@ final class BreedListViewModelTests: XCTestCase {
         await fulfillment(of: [exp], timeout: 1)
         
         XCTAssertFalse(viewModel.fetchFailed)
-        XCTAssertEqual(1, mockDogApi.fetchBreedListCallCounter)
+        XCTAssertEqual(1, mockBreedService.fetchBreedListCallCounter)
         XCTAssertNotNil(updatedBreedList)
         XCTAssertEqual(3, updatedBreedList?.first?.subbreeds.count)
     }
@@ -125,9 +127,9 @@ final class BreedListViewModelTests: XCTestCase {
     }
     
     func testIfAPIThrowsUrlsNotSetAndFetchFailedIsSet() async {
-        mockDogApi.throwError = true
+        mockBreedService.throwError = true
         
-        viewModel = BreedListViewModel(dogAPI: mockDogApi)
+        viewModel = BreedListViewModel(imageService: mockImageService, breedService: mockBreedService)
         
         let exp = XCTestExpectation(description: "fetchFailed not updated")
         
@@ -144,7 +146,7 @@ final class BreedListViewModelTests: XCTestCase {
         await fulfillment(of: [exp], timeout: 1)
         
         XCTAssertTrue(viewModel.fetchFailed)
-        XCTAssertEqual(1, mockDogApi.fetchBreedListCallCounter)
+        XCTAssertEqual(1, mockBreedService.fetchBreedListCallCounter)
         XCTAssertEqual(0, viewModel.breedList.count)
     }
 
