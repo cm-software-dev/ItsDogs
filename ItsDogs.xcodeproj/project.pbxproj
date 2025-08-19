@@ -25,9 +25,9 @@
 
 /* Begin PBXFileReference section */
 		6582FB132E54A594000EE865 /* ItsDogs-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ItsDogs-Info.plist"; sourceTree = "<group>"; };
-		65AE72222E44A92D003BE6F5 /* ChipDogs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ChipDogs.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		65AE722F2E44A92E003BE6F5 /* ChipDogsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChipDogsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		65AE72392E44A92E003BE6F5 /* ChipDogsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChipDogsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		65AE72222E44A92D003BE6F5 /* ItsDogs.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ItsDogs.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		65AE722F2E44A92E003BE6F5 /* ItsDogsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ItsDogsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		65AE72392E44A92E003BE6F5 /* ItsDogsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ItsDogsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -36,14 +36,14 @@
 			path = ItsDogs;
 			sourceTree = "<group>";
 		};
-		65AE72322E44A92E003BE6F5 /* ChipDogsTests */ = {
+		65AE72322E44A92E003BE6F5 /* ItsDogsTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ChipDogsTests;
+			path = ItsDogsTests;
 			sourceTree = "<group>";
 		};
-		65AE723C2E44A92E003BE6F5 /* ChipDogsUITests */ = {
+		65AE723C2E44A92E003BE6F5 /* ItsDogsUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = ChipDogsUITests;
+			path = ItsDogsUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -78,8 +78,8 @@
 			children = (
 				6582FB132E54A594000EE865 /* ItsDogs-Info.plist */,
 				65AE72242E44A92D003BE6F5 /* ItsDogs */,
-				65AE72322E44A92E003BE6F5 /* ChipDogsTests */,
-				65AE723C2E44A92E003BE6F5 /* ChipDogsUITests */,
+				65AE72322E44A92E003BE6F5 /* ItsDogsTests */,
+				65AE723C2E44A92E003BE6F5 /* ItsDogsUITests */,
 				65AE72232E44A92D003BE6F5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -87,9 +87,9 @@
 		65AE72232E44A92D003BE6F5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				65AE72222E44A92D003BE6F5 /* ChipDogs.app */,
-				65AE722F2E44A92E003BE6F5 /* ChipDogsTests.xctest */,
-				65AE72392E44A92E003BE6F5 /* ChipDogsUITests.xctest */,
+				65AE72222E44A92D003BE6F5 /* ItsDogs.app */,
+				65AE722F2E44A92E003BE6F5 /* ItsDogsTests.xctest */,
+				65AE72392E44A92E003BE6F5 /* ItsDogsUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -97,9 +97,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		65AE72212E44A92D003BE6F5 /* ChipDogs */ = {
+		65AE72212E44A92D003BE6F5 /* ItsDogs */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 65AE72432E44A92E003BE6F5 /* Build configuration list for PBXNativeTarget "ChipDogs" */;
+			buildConfigurationList = 65AE72432E44A92E003BE6F5 /* Build configuration list for PBXNativeTarget "ItsDogs" */;
 			buildPhases = (
 				65AE721E2E44A92D003BE6F5 /* Sources */,
 				65AE721F2E44A92D003BE6F5 /* Frameworks */,
@@ -112,16 +112,16 @@
 			fileSystemSynchronizedGroups = (
 				65AE72242E44A92D003BE6F5 /* ItsDogs */,
 			);
-			name = ChipDogs;
+			name = ItsDogs;
 			packageProductDependencies = (
 			);
 			productName = ChipDogs;
-			productReference = 65AE72222E44A92D003BE6F5 /* ChipDogs.app */;
+			productReference = 65AE72222E44A92D003BE6F5 /* ItsDogs.app */;
 			productType = "com.apple.product-type.application";
 		};
-		65AE722E2E44A92E003BE6F5 /* ChipDogsTests */ = {
+		65AE722E2E44A92E003BE6F5 /* ItsDogsTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 65AE72462E44A92E003BE6F5 /* Build configuration list for PBXNativeTarget "ChipDogsTests" */;
+			buildConfigurationList = 65AE72462E44A92E003BE6F5 /* Build configuration list for PBXNativeTarget "ItsDogsTests" */;
 			buildPhases = (
 				65AE722B2E44A92E003BE6F5 /* Sources */,
 				65AE722C2E44A92E003BE6F5 /* Frameworks */,
@@ -133,18 +133,18 @@
 				65AE72312E44A92E003BE6F5 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				65AE72322E44A92E003BE6F5 /* ChipDogsTests */,
+				65AE72322E44A92E003BE6F5 /* ItsDogsTests */,
 			);
-			name = ChipDogsTests;
+			name = ItsDogsTests;
 			packageProductDependencies = (
 			);
 			productName = ChipDogsTests;
-			productReference = 65AE722F2E44A92E003BE6F5 /* ChipDogsTests.xctest */;
+			productReference = 65AE722F2E44A92E003BE6F5 /* ItsDogsTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		65AE72382E44A92E003BE6F5 /* ChipDogsUITests */ = {
+		65AE72382E44A92E003BE6F5 /* ItsDogsUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 65AE72492E44A92E003BE6F5 /* Build configuration list for PBXNativeTarget "ChipDogsUITests" */;
+			buildConfigurationList = 65AE72492E44A92E003BE6F5 /* Build configuration list for PBXNativeTarget "ItsDogsUITests" */;
 			buildPhases = (
 				65AE72352E44A92E003BE6F5 /* Sources */,
 				65AE72362E44A92E003BE6F5 /* Frameworks */,
@@ -156,13 +156,13 @@
 				65AE723B2E44A92E003BE6F5 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				65AE723C2E44A92E003BE6F5 /* ChipDogsUITests */,
+				65AE723C2E44A92E003BE6F5 /* ItsDogsUITests */,
 			);
-			name = ChipDogsUITests;
+			name = ItsDogsUITests;
 			packageProductDependencies = (
 			);
 			productName = ChipDogsUITests;
-			productReference = 65AE72392E44A92E003BE6F5 /* ChipDogsUITests.xctest */;
+			productReference = 65AE72392E44A92E003BE6F5 /* ItsDogsUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -202,9 +202,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				65AE72212E44A92D003BE6F5 /* ChipDogs */,
-				65AE722E2E44A92E003BE6F5 /* ChipDogsTests */,
-				65AE72382E44A92E003BE6F5 /* ChipDogsUITests */,
+				65AE72212E44A92D003BE6F5 /* ItsDogs */,
+				65AE722E2E44A92E003BE6F5 /* ItsDogsTests */,
+				65AE72382E44A92E003BE6F5 /* ItsDogsUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -260,12 +260,12 @@
 /* Begin PBXTargetDependency section */
 		65AE72312E44A92E003BE6F5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 65AE72212E44A92D003BE6F5 /* ChipDogs */;
+			target = 65AE72212E44A92D003BE6F5 /* ItsDogs */;
 			targetProxy = 65AE72302E44A92E003BE6F5 /* PBXContainerItemProxy */;
 		};
 		65AE723B2E44A92E003BE6F5 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 65AE72212E44A92D003BE6F5 /* ChipDogs */;
+			target = 65AE72212E44A92D003BE6F5 /* ItsDogs */;
 			targetProxy = 65AE723A2E44A92E003BE6F5 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -402,7 +402,7 @@
 				DEVELOPMENT_TEAM = 7L847DX3TS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "ChipDogs-Info.plist";
+				INFOPLIST_FILE = "ItsDogs-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = ItsDogs;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -433,7 +433,7 @@
 				DEVELOPMENT_TEAM = 7L847DX3TS;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "ChipDogs-Info.plist";
+				INFOPLIST_FILE = "ItsDogs-Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = ItsDogs;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -469,7 +469,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ChipDogs.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ChipDogs";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ItsDogs.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ItsDogs";
 			};
 			name = Debug;
 		};
@@ -488,7 +488,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ChipDogs.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ChipDogs";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ItsDogs.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/ItsDogs";
 			};
 			name = Release;
 		};
@@ -538,7 +538,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		65AE72432E44A92E003BE6F5 /* Build configuration list for PBXNativeTarget "ChipDogs" */ = {
+		65AE72432E44A92E003BE6F5 /* Build configuration list for PBXNativeTarget "ItsDogs" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				65AE72442E44A92E003BE6F5 /* Debug */,
@@ -547,7 +547,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		65AE72462E44A92E003BE6F5 /* Build configuration list for PBXNativeTarget "ChipDogsTests" */ = {
+		65AE72462E44A92E003BE6F5 /* Build configuration list for PBXNativeTarget "ItsDogsTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				65AE72472E44A92E003BE6F5 /* Debug */,
@@ -556,7 +556,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		65AE72492E44A92E003BE6F5 /* Build configuration list for PBXNativeTarget "ChipDogsUITests" */ = {
+		65AE72492E44A92E003BE6F5 /* Build configuration list for PBXNativeTarget "ItsDogsUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				65AE724A2E44A92E003BE6F5 /* Debug */,
