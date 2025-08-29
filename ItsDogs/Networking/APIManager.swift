@@ -24,17 +24,22 @@ final class APIManager: APIManagerProtocol {
     private func createRequest(from endpoint: ApiEndpoint) throws -> URLRequest {
         guard
             let urlPath = URL(string: baseURL.appending(endpoint.path)),
-            var urlComponents = URLComponents(string: urlPath.path)
+            var urlComponents = URLComponents(url: urlPath, resolvingAgainstBaseURL: false)
         else {
             throw ApiError.invalidPath
         }
-        
         
         if let parameters = endpoint.parameters {
             urlComponents.queryItems = parameters
         }
         
-        var request = URLRequest(url: urlPath)
+        guard let pathWithComponents = urlComponents.url?.absoluteURL else {
+            throw ApiError.invalidPath
+        }
+        
+        print("final path is: \(pathWithComponents)")
+        
+        var request = URLRequest(url: pathWithComponents)
         request.httpMethod = endpoint.method.rawValue
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         return request
